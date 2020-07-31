@@ -5,41 +5,46 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Yen_sAlgorithm
+namespace yens_algorithm
 {
     class Program
     {
-        static int VertexCount(string path)
+        static string path;
+        static string GetDataName()
         {
-            StreamReader sR = new StreamReader(path);
-
-            string line = sR.ReadLine();
-            string[] read = line.Split();
-            sR.Close();
-            int vertexCount = Convert.ToInt32(read[0]);
-            return vertexCount;
-        }
-        static void Main(string[] args)
-        {
-            System.Diagnostics.Stopwatch myStopwatch = new System.Diagnostics.Stopwatch();
-            myStopwatch.Start();
-
-            string path = "data/data3.txt"; //data3.txt
-
-            var g = new Graph();
-
-            for (int i = 0; i < VertexCount(path); i++)
+            var msg = " Input data name: ";
+            tryAgain:
+            Console.Write(msg);
+            var dataName = "data/" + Console.ReadLine() + ".txt";
+            try
             {
-                string name = i.ToString();
-                g.AddVertex(name);
+                new StreamReader(dataName).ReadLine();
             }
+            catch
+            {
+                msg = " Input exist data name: ";
+                goto tryAgain;               
+            }
+            return dataName;
 
-            int vertexCount = VertexCount(path);
+        }
+        static (string start, string end, int count) GetInfo()
+        {
+            Console.WriteLine(" Vertex count - {0}", Graph.GetVertexCount(path)); //написать методы
+            Console.Write(" Start vertex: ");
+            string start = Console.ReadLine();
+            Console.Write(" Final vertex: ");
+            string end = Console.ReadLine();
+            Console.Write(" Path count: ");
+            int count = Convert.ToInt32(Console.ReadLine());
+            return (start, end, count);
+        }
 
+        static void GraphFilling(string path, Graph g)
+        {
             StreamReader sr = new StreamReader(path);
             string[] read = new string[3];
-            string line;
-            sr.ReadLine();
+            string line = sr.ReadLine();
             while ((line = sr.ReadLine()) != null)
             {
                 read = line.Split();
@@ -47,22 +52,20 @@ namespace Yen_sAlgorithm
                 g.AddEdge(g.FindVertex(read[1]), g.FindVertex(read[0]), Convert.ToInt32(read[2]));
             }
             g.FillingIncidiencyGraphEdges();
-
-            Console.WriteLine(" Vertex count - {0}", VertexCount(path));
-            Console.Write(" Start vertex: ");
-            string start = Console.ReadLine();
-            Console.Write(" Final vertex: ");
-            string end = Console.ReadLine();
-            Console.Write(" Path count: ");
-            int count = Convert.ToInt32(Console.ReadLine());
-
+        }
+        static void Main(string[] args)
+        {
+            System.Diagnostics.Stopwatch myStopwatch = new System.Diagnostics.Stopwatch();
+            myStopwatch.Start();
+            path = GetDataName();
+            var info = GetInfo();
+            var g = new Graph(path);      
+            GraphFilling(path, g);
             string pathInput = "";
-
             int costDijekstra = 0;
             List<GraphVertex> DijekstraPath = new List<GraphVertex>();
-            var startVertex = g.FindVertex(start);
-            var endVertex = g.FindVertex(end);
-
+            var startVertex = g.FindVertex(info.start);
+            var endVertex = g.FindVertex(info.end);
             g.Dijkstra(startVertex);
 
             costDijekstra = endVertex.distanceToVertex;
@@ -80,7 +83,7 @@ namespace Yen_sAlgorithm
             //Yen's alg
             Console.WriteLine("\n===========================================================");
             List<Path> temp1 = new List<Path>();
-            temp1.AddRange(g.Yen(startVertex, endVertex, count));
+            temp1.AddRange(g.Yen(startVertex, endVertex, info.count));
 
             foreach (var item in temp1)
             {

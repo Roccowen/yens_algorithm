@@ -1,61 +1,39 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Yen_sAlgorithm
+namespace yens_algorithm
 {
     public class Graph
     {
-        public static List<GraphVertex> Vertices;
-        public static List<GraphEdge> Edges;
-        /// <summary>
-        /// Graph
-        /// </summary>
-        public Graph()
+        public Dictionary<string, GraphVertex> Vertices;
+        public List<GraphEdge> Edges;
+        public Graph(string path)
         {
-            Vertices = new List<GraphVertex>();
+            Vertices = new Dictionary<string, GraphVertex>();
             Edges = new List<GraphEdge>();
+            
+            int vertexCount = GetVertexCount(path);
+            for (int i = 0; i < vertexCount; i++)
+                this.AddVertex(i.ToString());
         }
-        /// <summary>
-        /// Add vertex to vertices list
-        /// </summary>
-        /// <param name="vertexName">vertex name</param>
-        public void AddVertex(string vertexName)
+        public static int GetVertexCount(string pathToData)
         {
-            Vertices.Add(new GraphVertex(vertexName));
+            var cnt = new StreamReader(pathToData).ReadLine().Split();
+            return Convert.ToInt32(cnt[0]);
         }
-        /// <summary>
-        /// Vertex search
-        /// </summary>
-        /// <param name="vertexName">Name</param>
-        /// <returns>Vertex instance</returns>
+        public void AddVertex(string vertexName) => Vertices.Add(vertexName, new GraphVertex(vertexName));
         public GraphVertex FindVertex(string vertexName)
         {
-            foreach (var v in Vertices)
-            {
-                if (vertexName == v.name)
-                {
-                    return v;
-                }
-            }
-            return null;
+            return this.Vertices[vertexName];
         }
-        /// <summary>
-        /// Add edge to edges list
-        /// </summary>
-        /// <param name="vertex1">Начальная вершина</param>
-        /// <param name="vertex2">Конечная вершина</param>
-        /// <param name="weight">Вес</param>
         public void AddEdge(GraphVertex vertex1, GraphVertex vertex2, int weight)
         {
             Edges.Add(new GraphEdge(vertex1, vertex2, weight));
-        }
-        /// <summary>
-        /// Dijekstra algorithm
-        /// </summary>
-        /// <param name="start">Начальная вершина</param>       
+        }      
         public void Dijkstra(GraphVertex start)
         {
             var current = start;
@@ -73,9 +51,6 @@ namespace Yen_sAlgorithm
                 }
             }
         }
-        /// <summary>
-        /// Filling list with incident edges at vertices in a graph
-        /// </summary>
         public void FillingIncidiencyGraphEdges()
         {
             foreach (var edge in Edges)
@@ -83,23 +58,20 @@ namespace Yen_sAlgorithm
                 edge.vertex1.incidiencyGraphEdges.Add(edge);
             }
         }
-        /// <summary>
-        /// Search for unvisited vertex with minimal weight
-        /// </summary>
-        /// <returns>Vertex</returns>
+
         public GraphVertex FindUnvisitedMin()
         {
             int visitFalseCount = 0;
             string vertexMinName = "";
             int minValue = int.MaxValue;
-            foreach (var i in Graph.Vertices)
+            foreach (var i in this.Vertices)
             {
-                if (i.visit == false)
+                if (i.Value.visit == false)
                 {
-                    if (minValue > i.distanceToVertex)
+                    if (minValue > i.Value.distanceToVertex)
                     {
-                        minValue = i.distanceToVertex;
-                        vertexMinName = i.name;
+                        minValue = i.Value.distanceToVertex;
+                        vertexMinName = i.Value.name;
                     }
                     ++visitFalseCount;
                 }
@@ -110,12 +82,6 @@ namespace Yen_sAlgorithm
             }
             else return FindVertex(vertexMinName);
         }
-        /// <summary>
-        /// Finding an edge between two vertices
-        /// </summary>
-        /// <param name="vertex1">Первая вершина</param>
-        /// <param name="vertex2">Вторая вершина</param>
-        /// <returns>Edge between then</returns>
         public GraphEdge FindIncidientGraphsEdge(GraphVertex vertex1, GraphVertex vertex2)
         {
             foreach (var item in vertex1.incidiencyGraphEdges)
@@ -127,10 +93,7 @@ namespace Yen_sAlgorithm
             }
             return null;
         }
-        /// <summary>
-        /// Filling the distance and path to the nearest peaks
-        /// </summary>
-        /// <param name="graphVertex1">Vertex</param>
+
         public void FillingDistanceAndPathInNears(GraphVertex graphVertex)
         {
             int pathWeight = 0;
@@ -151,12 +114,7 @@ namespace Yen_sAlgorithm
                 }
             }
         }
-        /// <summary>
-        /// Remove edge from graph
-        /// </summary>
-        /// <param name="v1">First vertex</param>
-        /// <param name="v2">second vertex</param>
-        /// <returns>removed edge</returns>
+
         public GraphEdge RemoveEdgeFromGraph(GraphVertex v1, GraphVertex v2)
         {
             int temp = 0;
@@ -184,10 +142,7 @@ namespace Yen_sAlgorithm
 
             return saveEdge;
         }
-        /// <summary>
-        /// Return edge
-        /// </summary>
-        /// <param name="deadEdge">Edge</param>
+
         public void ReturnEdgeInGraph(GraphEdge deadEdge)
         {
             GraphVertex vertexR1 = deadEdge.vertex1;
@@ -201,11 +156,7 @@ namespace Yen_sAlgorithm
             vertexR1.incidiencyGraphEdges.Add(returnEdge);
 
         }
-        /// <summary>
-        /// Delete and Insert
-        /// </summary>
-        /// <param name="start">First vertex</param>
-        /// <param name="end">Second vertex</param>
+
         public List<Path> YenAlg(GraphVertex start, GraphVertex end)
         {
             List<Path> Gen = new List<Path>();
@@ -220,9 +171,9 @@ namespace Yen_sAlgorithm
 
                 foreach (var item in Vertices)
                 {
-                    item.visit = false;
-                    item.distanceToVertex = int.MaxValue;
-                    item.path.Clear();
+                    item.Value.visit = false;
+                    item.Value.distanceToVertex = int.MaxValue;
+                    item.Value.path.Clear();
                 }
 
                 Dijkstra(start);
@@ -243,13 +194,7 @@ namespace Yen_sAlgorithm
             }
             return Gen;
         }
-        /// <summary>
-        /// Yens algorithm
-        /// </summary>
-        /// <param name="start"> First vertex</param>
-        /// <param name="end"> Second vertex</param>
-        /// <param name="count"> How many shortest paths you need to find</param>
-        /// <returns>Лист путей</returns>
+
         public List<Path> Yen(GraphVertex start, GraphVertex end, int count)
         {
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Yen_sAlgorithm
+namespace yens_algorithm
 {
     public class GraphVertex
     {
@@ -13,10 +13,7 @@ namespace Yen_sAlgorithm
         public string name;
         public List<GraphEdge> incidiencyGraphEdges;
         public List<GraphVertex> path;
-        /// <summary>
-        /// Vertex
-        /// </summary>
-        /// <param name="name">Vertex name</param>
+
         public GraphVertex(string name)
         {
             visit = false;

@@ -4,3 +4,4 @@ D:\same shit\yens_algorithm\bin\Debug\yens_algorithm.pdb
 D:\same shit\yens_algorithm\obj\Debug\yens_algorithm.csprojAssemblyReference.cache
 D:\same shit\yens_algorithm\obj\Debug\yens_algorithm.exe
 D:\same shit\yens_algorithm\obj\Debug\yens_algorithm.pdb
+d:\same shit\yens_algorithm\obj\Debug\yens_algorithm.csproj.CoreCompileInputs.cache
