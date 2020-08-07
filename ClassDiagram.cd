@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="yens_algorithm.DataReader" Collapsed="true">
+    <Position X="4.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAQAAAAAAgAAAAAAAQAAAA=</HashCode>
+      <FileName>DataReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="yens_algorithm.GraphLibrary.Graph">
+    <Position X="4.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAEgAEAAAAAAAAACAAAAAAAAAAAACAAEABAAAAAAAA=</HashCode>
+      <FileName>GraphLibrary\Graph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="yens_algorithm.GraphLibrary.Edge">
+    <Position X="8" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAwAAAAAAAAAAAACAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>GraphLibrary\Edge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="yens_algorithm.GraphLibrary.Vertex">
+    <Position X="6.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GraphLibrary\Vertex.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="yens_algorithm.GraphLibrary.Path" Collapsed="true">
+    <Position X="6.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAEAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>YensAlgorithmLibrary\Path.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="yens_algorithm.YensAlgorithmLibrary.YensAlgorithm">
+    <Position X="6.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAQAACQAAAEAAAAAAAAQAgAAAAAAIAAAAA=</HashCode>
+      <FileName>YensAlgorithmLibrary\YensAlgorithm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="yens_algorithm.Program">
+    <Position X="1.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAIAAAAAAAAAAAAAAEAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="yens_algorithm.VertexInfo">
+    <Position X="8.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAggBAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>YensAlgorithmLibrary\VertexInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

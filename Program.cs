@@ -4,18 +4,19 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using yens_algorithm.GraphLibrary;
 
 namespace yens_algorithm
 {
     class Program
     {
-        static string path;
+        static string Path;
         static string GetDataName()
         {
             var msg = " Input data name: ";
             tryAgain:
             Console.Write(msg);
-            var dataName = "data/" + Console.ReadLine() + ".txt";
+            var dataName = "data_all/" + Console.ReadLine() + ".txt";
             try
             {
                 new StreamReader(dataName).ReadLine();
@@ -30,7 +31,7 @@ namespace yens_algorithm
         }
         static (string start, string end, int count) GetInfo()
         {
-            Console.WriteLine(" Vertex count - {0}", Graph.GetVertexCount(path)); //написать методы
+            Console.WriteLine(" Vertex count - {0}", DataReader.GetDataVertexCount(Path));
             Console.Write(" Start vertex: ");
             string start = Console.ReadLine();
             Console.Write(" Final vertex: ");
@@ -40,47 +41,33 @@ namespace yens_algorithm
             return (start, end, count);
         }
 
-        static void GraphFilling(string path, Graph g)
-        {
-            StreamReader sr = new StreamReader(path);
-            string[] read = new string[3];
-            string line = sr.ReadLine();
-            while ((line = sr.ReadLine()) != null)
-            {
-                read = line.Split();
-                g.AddEdge(g.FindVertex(read[0]), g.FindVertex(read[1]), Convert.ToInt32(read[2]));
-                g.AddEdge(g.FindVertex(read[1]), g.FindVertex(read[0]), Convert.ToInt32(read[2]));
-            }
-            g.FillingIncidiencyGraphEdges();
-        }
         static void Main(string[] args)
         {
             System.Diagnostics.Stopwatch myStopwatch = new System.Diagnostics.Stopwatch();
-            myStopwatch.Start();
-            path = GetDataName();
+            
+            Path = GetDataName();
             var info = GetInfo();
-            var g = new Graph(path);      
-            GraphFilling(path, g);
+            myStopwatch.Start();
+            var g = new Graph(Path);      
+            GraphFilling(Path, g);
             string pathInput = "";
             int costDijekstra = 0;
-            List<GraphVertex> DijekstraPath = new List<GraphVertex>();
-            var startVertex = g.FindVertex(info.start);
-            var endVertex = g.FindVertex(info.end);
+            List<Vertex> DijekstraPath = new List<Vertex>();
+            var startVertex = g.GetVertex(info.start);
+            var endVertex = g.GetVertex(info.end);
             g.Dijkstra(startVertex);
 
-            costDijekstra = endVertex.distanceToVertex;
-            DijekstraPath.AddRange(endVertex.path);
+            costDijekstra = endVertex.DistanceToVertex;
+            DijekstraPath.AddRange(endVertex.Path);
 
-            //shortest path
             foreach (var item in DijekstraPath)
             {
-                pathInput += item.name + " ";
+                pathInput += item.Name + " ";
             }
 
             Console.WriteLine(" Shortest path: {0}", pathInput);
             Console.WriteLine(" Weight: {0}", costDijekstra);
 
-            //Yen's alg
             Console.WriteLine("\n===========================================================");
             List<Path> temp1 = new List<Path>();
             temp1.AddRange(g.Yen(startVertex, endVertex, info.count));
