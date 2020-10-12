@@ -50,15 +50,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataReader.cs" />
-    <Compile Include="YensAlgorithmLibrary\VertexInfo.cs" />
-    <Compile Include="TestsLibrary\GraphTest.cs" />
-    <Compile Include="GraphLibrary\Graph.cs" />
-    <Compile Include="GraphLibrary\Edge.cs" />
-    <Compile Include="GraphLibrary\Vertex.cs" />
-    <Compile Include="YensAlgorithmLibrary\Path.cs" />
+    <Compile Include="YensAlgorithmD\VertexInfo.cs" />
+    <Compile Include="Tests\GraphTest.cs" />
+    <Compile Include="GraphD\Graph.cs" />
+    <Compile Include="GraphD\Edge.cs" />
+    <Compile Include="GraphD\Vertex.cs" />
+    <Compile Include="YensAlgorithmD\Path.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="YensAlgorithmLibrary\YensAlgorithm.cs" />
+    <Compile Include="YensAlgorithmD\YensAlgorithm.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

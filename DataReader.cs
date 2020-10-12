@@ -4,18 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using yens_algorithm.GraphLibrary;
+using yens_algorithm.GraphD;
 
 namespace yens_algorithm
 {
     class DataReader
     {
-        Graph Graph;
+        Graph graph;
         public DataReader(Graph g)
         {
-            Graph = g;
+            graph = g;
         }
-        static void GraphFilling(string path, Graph g)
+        void GraphFilling(string path, Graph g)
         {
             StreamReader sr = new StreamReader(path);
             string[] read = new string[3];
@@ -26,12 +26,12 @@ namespace yens_algorithm
                 g.AddEdge(g.GetVertex(read[0]), g.GetVertex(read[1]), Convert.ToInt32(read[2]));
                 g.AddEdge(g.GetVertex(read[1]), g.GetVertex(read[0]), Convert.ToInt32(read[2]));
             }
-            g.FillingIncidiencyGraphEdges();
+            FillingIncidiencyGraphEdges(graph);
         }
-        public void FillingIncidiencyGraphEdges()
+        public void FillingIncidiencyGraphEdges(Graph graph)
         {
-            foreach (var edge in Graph.Edges)
-                edge.Vertex1.IncidiencyGraphEdges.Add(edge);
+            foreach (var edge in graph.Edges.Values)
+                edge.Value.Vertex1.IncidiencyGraphEdges.Add(edge.Value);
         }
         static public int GetDataVertexCount(string pathToData) => Convert.ToInt32(new StreamReader(pathToData).ReadLine().Split()[0]);
     }

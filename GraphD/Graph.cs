@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace yens_algorithm.GraphLibrary
+namespace yens_algorithm.GraphD
 {
     public class Graph
     {
-        Dictionary<(Vertex vertex1, Vertex vertex2), Edge> Edges;
+        public Dictionary<(Vertex vertex1, Vertex vertex2), Edge> Edges;
         public Dictionary<string, Vertex> Vertices;
 
         public Graph(int vertexCount)
@@ -24,7 +24,7 @@ namespace yens_algorithm.GraphLibrary
         public void AddEdge(Vertex vertex1, Vertex vertex2, int weight) => Edges.Add((vertex1, vertex2), new Edge(vertex1, vertex2, weight));
         public Edge RemoveEdge(Vertex v1, Vertex v2)
         {
-            var deletedEdge = Edges[(v1, v2)].Clone();
+            var deletedEdge = Edges[(v1, v2)];
             Edges.Remove((v1, v2));
             return deletedEdge;
         }

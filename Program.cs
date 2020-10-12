@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using yens_algorithm.GraphLibrary;
+using yens_algorithm.GraphD;
 
 namespace yens_algorithm
 {

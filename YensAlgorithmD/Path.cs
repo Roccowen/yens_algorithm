@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace yens_algorithm.GraphLibrary
+namespace yens_algorithm.GraphD
 {
     public class Path
     {
@@ -19,10 +15,10 @@ namespace yens_algorithm.GraphLibrary
             this.DeletedEdge = deletedEdge;
         }
 
-        public Path()
+        public Path(int w = 0)
         {
             this.Route = new List<Vertex>();
-            this.Weight = 0;
+            this.Weight = w;
             this.DeletedEdge = new Edge();
         }
     }
