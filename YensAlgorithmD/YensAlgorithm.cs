@@ -5,25 +5,26 @@ using System.Text;
 using System.Threading.Tasks;
 using yens_algorithm.GraphD;
 
-namespace yens_algorithm.YensAlgorithmLibrary
+namespace yens_algorithm.YensAlgorithmD
 {
     class YensAlgorithm
     {
         Graph YenGraph;
-        Dictionary<Vertex, VertexInfo> VerteciesInfo;
-        
+        public Dictionary<Vertex, VertexInfo> _VerteciesInfo;
+
         public YensAlgorithm(Graph g)
         {
             YenGraph = g;
-            foreach (Vertex vertex in g.Vertices.Values)
-                VerteciesInfo.Add(vertex, new VertexInfo(vertex));
+            _VerteciesInfo = new Dictionary<Vertex, VertexInfo>();
+            foreach (var vertex in g.Vertices.Values)
+                _VerteciesInfo.Add(vertex, new VertexInfo(vertex));
         }
 
-        public Vertex FindUnvisitedMin() //O(n) 
+        public Vertex FindUnvisitedMin()
         {
             Vertex nearestVertex = null;
             int minDistance = int.MaxValue;
-            foreach (VertexInfo vertexInfo in VerteciesInfo.Values)
+            foreach (VertexInfo vertexInfo in _VerteciesInfo.Values)
             {
                 if (vertexInfo.IsVisited == false)
                 {
@@ -36,51 +37,38 @@ namespace yens_algorithm.YensAlgorithmLibrary
             }
             return nearestVertex;
         }
-        public Edge FindEdge(Vertex vertex1, Vertex vertex2) => YenGraph.GetEdge(vertex1, vertex2);
 
         public void FillingDistanceAndPathInNears(Vertex graphVertex)
         {
             int pathWeight = 0;
             List<Vertex> verticesPath = new List<Vertex>();
-            verticesPath.AddRange(VerteciesInfo[graphVertex].Path);
+            verticesPath.AddRange(_VerteciesInfo[graphVertex].Path);
 
-            foreach (var item in graphVertex.IncidiencyGraphEdges)
+            foreach (var vertex in YenGraph.Struct[graphVertex])
             {
-                var nearVertex = item.Vertex2;
-                pathWeight = VerteciesInfo[graphVertex].DistanceToVertex + item.Weight;
+                var nearVertex = vertex.Key;
+                pathWeight = _VerteciesInfo[graphVertex].DistanceToVertex + vertex.Value;
 
-                if (pathWeight < VerteciesInfo[nearVertex].DistanceToVertex)
-                {                    
-                    VerteciesInfo[nearVertex].Path.Clear();
-                    VerteciesInfo[nearVertex].Path.AddRange(verticesPath);
-                    VerteciesInfo[nearVertex].Path.Add(nearVertex);
-                    VerteciesInfo[nearVertex] = new VertexInfo(nearVertex, false, pathWeight, VerteciesInfo[nearVertex].Path);
+                if (pathWeight < _VerteciesInfo[nearVertex].DistanceToVertex)
+                {
+                    _VerteciesInfo[nearVertex].Path.Clear();
+                    _VerteciesInfo[nearVertex].Path.AddRange(verticesPath);
+                    _VerteciesInfo[nearVertex].Path.Add(nearVertex);
+                    _VerteciesInfo[nearVertex].DistanceToVertex = pathWeight;
                 }
             }
         }
-        public void ReturnEdgeInGraph(Edge deadEdge)
-        {
-            Vertex vertexR1 = deadEdge.Vertex1;
-            Vertex vertexR2 = deadEdge.Vertex2;
-            int weightR = deadEdge.Weight;
-
-            Edge returnEdge = new Edge(vertexR1, vertexR2, weightR);
-
-            YenGraph.AddEdge(vertexR1, vertexR2, weightR);
-
-            vertexR1.IncidiencyGraphEdges.Add(returnEdge);
-
-        }
+        public void Dijkstra(string vertex) => Dijkstra(YenGraph.GetVertex(vertex));
         public void Dijkstra(Vertex start)
         {
             var current = start;
-            VerteciesInfo[current].Path.Add(current);
-            VerteciesInfo[current] = new VertexInfo(current, false, 0, VerteciesInfo[current].Path);           
+            _VerteciesInfo[current].Path.Add(current);
+            _VerteciesInfo[current].DistanceToVertex = 0;
 
             while (current != null)
             {
-                g.FillingDistanceAndPathInNears(current);
-                VerteciesInfo[current].IsVisited = true;
+                FillingDistanceAndPathInNears(current);
+                _VerteciesInfo[current].IsVisited = true;
                 current = FindUnvisitedMin();
             }
         }
@@ -88,36 +76,34 @@ namespace yens_algorithm.YensAlgorithmLibrary
         {
             List<Path> Gen = new List<Path>();
             List<Vertex> shortestPathInGen = new List<Vertex>();
-            shortestPathInGen.AddRange(VerteciesInfo[end].Path);
+            shortestPathInGen.AddRange(_VerteciesInfo[end].Path);
 
 
             for (int i = 0; i < shortestPathInGen.Count - 1; i++)
             {
-                Edge deadEdge = new Edge(YenGraph.RemoveEdge(shortestPathInGen[i], shortestPathInGen[i + 1]).Vertex1,
-                    YenGraph.RemoveEdge(shortestPathInGen[i], shortestPathInGen[i + 1]).Vertex2);
+                var deadEdge = YenGraph.RemoveEdge(shortestPathInGen[i], shortestPathInGen[i + 1]);
 
                 foreach (var item in YenGraph.Vertices)
                 {
-                    VerteciesInfo[item.Value].IsVisited = false;
-                    VerteciesInfo[item.Value].DistanceToVertex = int.MaxValue;
-                    VerteciesInfo[item.Value].Path.Clear();
+                    _VerteciesInfo[item.Value].IsVisited = false;
+                    _VerteciesInfo[item.Value].DistanceToVertex = int.MaxValue;
+                    _VerteciesInfo[item.Value].Path.Clear();
                 }
 
                 Dijkstra(start);
 
                 Path temp = new Path();
 
-                temp.Route.AddRange(VerteciesInfo[end].Path);
-                temp.Weight = VerteciesInfo[end].DistanceToVertex;
+                temp.Route.AddRange(_VerteciesInfo[end].Path);
+                temp.Weight = _VerteciesInfo[end].DistanceToVertex;
 
-                temp.DeletedEdge.Vertex1 = deadEdge.Vertex1;
-                temp.DeletedEdge.Vertex2 = deadEdge.Vertex2;
-                temp.DeletedEdge.Weight = deadEdge.Weight;
+                temp.DeletedEdge.vertex1 = deadEdge.vertex1;
+                temp.DeletedEdge.vertex2 = deadEdge.vertex2;
+                temp.DeletedEdge.weight = deadEdge.weight;
 
                 Gen.Add(temp);
 
-                ReturnEdgeInGraph(deadEdge);
-                deadEdge = null;
+                YenGraph.AddEdge(deadEdge);
             }
             return Gen;
         }
@@ -126,7 +112,8 @@ namespace yens_algorithm.YensAlgorithmLibrary
 
             List<Path> Generation = new List<Path>();
             List<Path> Best = new List<Path>();
-            List<Edge> deadList = new List<Edge>();
+            List<(Vertex vertex1, Vertex vertex2, int weight)> deadList
+                = new List<(Vertex vertex1, Vertex vertex2, int weight)>();
 
             for (int i = 0; i < count; i++)
             {
@@ -146,8 +133,8 @@ namespace yens_algorithm.YensAlgorithmLibrary
                         bestItem.Route.AddRange(item.Route);
                         bestItem.Weight = item.Weight;
 
-                        bestItem.DeletedEdge.Vertex1 = item.DeletedEdge.Vertex1;
-                        bestItem.DeletedEdge.Vertex2 = item.DeletedEdge.Vertex2;
+                        bestItem.DeletedEdge.vertex1 = item.DeletedEdge.vertex1;
+                        bestItem.DeletedEdge.vertex2 = item.DeletedEdge.vertex2;
                     }
                 }
                 if (minLength == int.MaxValue)
@@ -158,10 +145,10 @@ namespace yens_algorithm.YensAlgorithmLibrary
 
                 Generation.Clear();
 
-                YenGraph.RemoveEdge(bestItem.DeletedEdge.Vertex1, bestItem.DeletedEdge.Vertex2);
+                YenGraph.RemoveEdge(bestItem.DeletedEdge.vertex1, bestItem.DeletedEdge.vertex2);
 
-                VerteciesInfo[end].Path.Clear();
-                VerteciesInfo[end].Path.AddRange(bestItem.Route);
+                _VerteciesInfo[end].Path.Clear();
+                _VerteciesInfo[end].Path.AddRange(bestItem.Route);
 
                 Best.Add(bestItem);
             }

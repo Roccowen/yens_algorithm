@@ -1,25 +1,25 @@
 ﻿using System.Collections.Generic;
+using yens_algorithm.GraphD;
 
-namespace yens_algorithm.GraphD
+namespace yens_algorithm.YensAlgorithmD
 {
     public class Path
     {
         public List<Vertex> Route;
         public int Weight;
-        public Edge DeletedEdge;
+        public (Vertex vertex1, Vertex vertex2, int weight) DeletedEdge;
 
-        public Path(List<Vertex> route, int weight, Edge deletedEdge)
+        public Path(List<Vertex> route, int weight, (Vertex vertex1, Vertex vertex2, int weight) deletedEdge)
         {
             this.Route = route;
             this.Weight = weight;
             this.DeletedEdge = deletedEdge;
         }
 
-        public Path(int w = 0)
+        public Path()
         {
             this.Route = new List<Vertex>();
-            this.Weight = w;
-            this.DeletedEdge = new Edge();
+            this.Weight = 0;
         }
     }
 }

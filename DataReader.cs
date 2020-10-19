@@ -8,31 +8,24 @@ using yens_algorithm.GraphD;
 
 namespace yens_algorithm
 {
-    class DataReader
+    static class DataReader
     {
-        Graph graph;
-        public DataReader(Graph g)
+        public static Graph ReadGraph(string path, bool _bidirectional)
         {
-            graph = g;
-        }
-        void GraphFilling(string path, Graph g)
-        {
-            StreamReader sr = new StreamReader(path);
+            var graph = new Graph(_bidirectional);
+            var sr = new StreamReader(path);
             string[] read = new string[3];
             string line = sr.ReadLine();
             while ((line = sr.ReadLine()) != null)
             {
                 read = line.Split();
-                g.AddEdge(g.GetVertex(read[0]), g.GetVertex(read[1]), Convert.ToInt32(read[2]));
-                g.AddEdge(g.GetVertex(read[1]), g.GetVertex(read[0]), Convert.ToInt32(read[2]));
+                graph.AddVertex(read[0]);
+                graph.AddVertex(read[1]);
+                
+                graph.AddEdge(read[0], read[1], read[2]);
             }
-            FillingIncidiencyGraphEdges(graph);
+            return graph;
         }
-        public void FillingIncidiencyGraphEdges(Graph graph)
-        {
-            foreach (var edge in graph.Edges.Values)
-                edge.Value.Vertex1.IncidiencyGraphEdges.Add(edge.Value);
-        }
-        static public int GetDataVertexCount(string pathToData) => Convert.ToInt32(new StreamReader(pathToData).ReadLine().Split()[0]);
+        public static int GetDataVertexCount(string pathToData) => Convert.ToInt32(new StreamReader(pathToData).ReadLine().Split()[0]);
     }
 }

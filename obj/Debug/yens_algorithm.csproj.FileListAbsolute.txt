@@ -9,3 +9,14 @@ D:\same shit\yens_algorithm\bin\Debug\nunit.framework.dll
 D:\same shit\yens_algorithm\bin\Debug\nunit.framework.pdb
 D:\same shit\yens_algorithm\bin\Debug\nunit.framework.xml
 D:\same shit\yens_algorithm\obj\Debug\yens_algorithm.csproj.CopyComplete
+d:\same shit\yens_algorithm1\obj\Debug\yens_algorithm.csprojAssemblyReference.cache
+d:\same shit\yens_algorithm1\obj\Debug\yens_algorithm.csproj.CoreCompileInputs.cache
+d:\same shit\yens_algorithm1\obj\Debug\yens_algorithm.exe
+d:\same shit\yens_algorithm1\obj\Debug\yens_algorithm.pdb
+d:\same shit\yens_algorithm1\bin\Debug\yens_algorithm.exe.config
+d:\same shit\yens_algorithm1\bin\Debug\yens_algorithm.exe
+d:\same shit\yens_algorithm1\bin\Debug\yens_algorithm.pdb
+d:\same shit\yens_algorithm1\bin\Debug\nunit.framework.dll
+d:\same shit\yens_algorithm1\bin\Debug\nunit.framework.pdb
+d:\same shit\yens_algorithm1\bin\Debug\nunit.framework.xml
+d:\same shit\yens_algorithm1\obj\Debug\yens_algorithm.csproj.CopyComplete

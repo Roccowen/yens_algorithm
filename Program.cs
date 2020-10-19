@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using yens_algorithm.GraphD;
+using yens_algorithm.YensAlgorithmD;
 
 namespace yens_algorithm
 {
@@ -16,18 +17,17 @@ namespace yens_algorithm
             var msg = " Input data name: ";
             tryAgain:
             Console.Write(msg);
-            var dataName = "data_all/" + Console.ReadLine() + ".txt";
+            var dataName = "data/" + Console.ReadLine() + ".txt";
             try
             {
                 new StreamReader(dataName).ReadLine();
             }
-            catch
+            catch (Exception e)
             {
-                msg = " Input exist data name: ";
+                msg = e.Message + " Input exist data name: ";
                 goto tryAgain;               
             }
             return dataName;
-
         }
         static (string start, string end, int count) GetInfo()
         {
@@ -48,17 +48,17 @@ namespace yens_algorithm
             Path = GetDataName();
             var info = GetInfo();
             myStopwatch.Start();
-            var g = new Graph(Path);      
-            GraphFilling(Path, g);
+            var graph = DataReader.ReadGraph(Path, true);
+            var yen = new YensAlgorithm(graph);
             string pathInput = "";
             int costDijekstra = 0;
             List<Vertex> DijekstraPath = new List<Vertex>();
-            var startVertex = g.GetVertex(info.start);
-            var endVertex = g.GetVertex(info.end);
-            g.Dijkstra(startVertex);
+            var startVertex = graph.GetVertex(info.start);
+            var endVertex = graph.GetVertex(info.end);
+            yen.Dijkstra(startVertex);
 
-            costDijekstra = endVertex.DistanceToVertex;
-            DijekstraPath.AddRange(endVertex.Path);
+            costDijekstra = yen._VerteciesInfoPairs[endVertex].DistanceToVertex;
+            DijekstraPath.AddRange(yen._VerteciesInfoPairs[endVertex].Path);
 
             foreach (var item in DijekstraPath)
             {
@@ -69,22 +69,22 @@ namespace yens_algorithm
             Console.WriteLine(" Weight: {0}", costDijekstra);
 
             Console.WriteLine("\n===========================================================");
-            List<Path> temp1 = new List<Path>();
-            temp1.AddRange(g.Yen(startVertex, endVertex, info.count));
+            List<YensAlgorithmD.Path> temp1 = new List<YensAlgorithmD.Path>(); 
+            temp1.AddRange(yen.Yen(startVertex, endVertex, info.count));
 
             foreach (var item in temp1)
             {
                 int ves = 0;
                 string pyt = " ";
 
-                foreach (var jtem in item.route)
+                foreach (var jtem in item.Route)
                 {
-                    pyt += jtem.name + " ";
+                    pyt += jtem.Name + " ";
                 }
 
-                ves = item.weight;
-                Console.WriteLine(" Path:{0}      Path weight: {1}.    Remote edge: {2} - > {3}.",
-                    pyt, ves, item.deletedEdge.vertex1.name, item.deletedEdge.vertex2.name);
+                ves = item.Weight;
+                Console.WriteLine(" Path:{0}      Path weight: {1}.    Remoted edge: {2} - > {3}.",
+                    pyt, ves, item.DeletedEdge.vertex1.Name, item.DeletedEdge.vertex2.Name);
             }
 
             myStopwatch.Stop();
